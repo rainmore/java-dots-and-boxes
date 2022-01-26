@@ -1,28 +1,33 @@
 package au.com.rainmore.game;
 
 import au.com.rainmore.Game;
+import au.com.rainmore.domains.Action;
 import au.com.rainmore.domains.Player;
+import au.com.rainmore.domains.Point;
 import au.com.rainmore.game.renders.BoardRender;
 import au.com.rainmore.game.renders.Render;
+import au.com.rainmore.game.validators.ActionValidator;
+import au.com.rainmore.game.validators.InputValidator;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class UserInterface implements Render {
 
-    private Game    game;
     private final Scanner scanner;
     private final BoardRender boardRender = new BoardRender();
+
+    private Game    game;
+    private InputValidator inputValidator;
+    private ActionValidator actionValidator;
 
     public UserInterface(Scanner scanner) {
         this.scanner = scanner;
     }
 
-    private Game getGame() {
-        return game;
-    }
-
     private void setGame(Game game) {
         this.game = game;
+        this.inputValidator = new InputValidator(game);
+        this.actionValidator = new ActionValidator(game);
     }
 
     @Override
@@ -33,8 +38,7 @@ public class UserInterface implements Render {
 
         while (running) {
             printBoard();
-            processPlayerInput(game.getPlayer1());
-            processPlayerInput(game.getPlayer2());
+            processPlayerInput(getNextPlayer());
         }
     }
 
@@ -58,25 +62,60 @@ public class UserInterface implements Render {
 
         String input = scanner.next();
 
-        if (isQuitCommand(input)) {
+        List<Error> errors = new ArrayList<>();
+
+        inputValidator.validate(input, errors);
+
+        if (!errors.isEmpty()) {
+            errors.forEach(error -> println(error.getMessage().toString()));
+            processPlayerInput(player);
+        }
+        else if (inputValidator.isQuite(input)) {
             quit();
         }
         else {
-            processInput(input);
+            processAction(player, input);
         }
     }
 
-    private void processInput(String input) {
+    private Player getNextPlayer() {
+        Optional<Player> previousPlayer = game.getPreviousAction().map(Action::getPlayer);
+        if (previousPlayer.isEmpty() ||
+                previousPlayer.filter(player -> player.equals(game.getPlayer2())).isPresent()) {
+            return game.getPlayer1();
+        }
+        else {
+            return game.getPlayer2();
+        }
+    }
+
+    private void processAction(Player player, String input) {
         println(input);
-        // TODO to process input
-    }
+        Action action = new Action(player, Point.of(input));
 
-    private void sanitizeCommand() {
+        List<Error> errors = new ArrayList<>();
 
-    }
+        actionValidator.validate(action, errors);
 
-    private void validateAction() {
-        
+        if (!errors.isEmpty()) {
+            errors.forEach(error -> println(error.getMessage().toString()));
+            processPlayerInput(player);
+        }
+        else {
+            game.addAction(action);
+
+            Optional<Player> winner = game.getWinner();
+            if (winner.isPresent()) {
+                println("");
+                String template = "Game over. Player %s is the winner!";
+                println(String.format(template, winner.get().getName()));
+                quit();
+            }
+            else {
+                printBoard();
+                processPlayerInput(getNextPlayer());
+            }
+        }
     }
 
 }

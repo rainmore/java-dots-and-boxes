@@ -1,25 +1,40 @@
 package au.com.rainmore.domains;
 
+import java.util.Optional;
+
 public class Position {
 
-    private Point point;
-    private PositionType positionType;
+    private Point        point;
+    private PositionType type;
+    private Player setBy;
 
     public Position(Point point, PositionType positionType) {
         this.point = point;
-        this.positionType = positionType;
+        this.type = positionType;
     }
 
     public PositionType getPositionType() {
-        return positionType;
+        return type;
     }
 
     public void setPositionType(PositionType positionType) {
-        this.positionType = positionType;
+        this.type = positionType;
     }
 
     public Point getPoint() {
         return point;
+    }
+
+    public Player getSetBy() {
+        return setBy;
+    }
+
+    public void setSetBy(Player setBy) {
+        this.setBy = setBy;
+    }
+
+    public boolean isSet() {
+        return Optional.ofNullable(setBy).isPresent();
     }
 
     public static Position of(Point point, PositionType type) {

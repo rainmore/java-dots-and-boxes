@@ -4,48 +4,32 @@ import java.util.Objects;
 
 public class Box {
 
-    private final Dot dot;
-    private final int step;
+    private Position top;
+    private Position right;
+    private Position bottom;
+    private Position left;
 
-    private Dot topRight;
-    private Dot bottomLeft;
-    private Dot bottomRight;
-
-    public Box(Dot dot, int step) {
-        this.dot = dot;
-        this.step = step;
-
-        init();
+    public Box(Position top, Position right, Position bottom, Position left) {
+        this.top = top;
+        this.right = right;
+        this.bottom = bottom;
+        this.left = left;
     }
 
-    private void init() {
-        this.topRight = Dot.of(getTopRight().getX() + getStep(), getTopRight().getY());
-        this.bottomLeft = Dot.of(getTopRight().getX(), getTopRight().getY() + getStep());
-        this.bottomRight = Dot.of(getTopRight().getX() + getStep(), getTopRight().getY() + getStep());
+    public Position getTop() {
+        return top;
     }
 
-    public Dot getDot() {
-        return dot;
+    public Position getLeft() {
+        return left;
     }
 
-    public int getStep() {
-        return step;
+    public Position getBottom() {
+        return bottom;
     }
 
-    public Dot getTopLeft() {
-        return getDot();
-    }
-
-    public Dot getTopRight() {
-        return topRight;
-    }
-
-    public Dot getBottomLeft() {
-        return bottomLeft;
-    }
-
-    public Dot getBottomRight() {
-        return bottomRight;
+    public Position getRight() {
+        return right;
     }
 
     @Override
@@ -53,11 +37,11 @@ public class Box {
         if (this == o) return true;
         if (!(o instanceof Box)) return false;
         Box box = (Box) o;
-        return Objects.equals(getDot(), box.getDot()) && Objects.equals(getTopRight(), box.getTopRight()) && Objects.equals(getBottomLeft(), box.getBottomLeft()) && Objects.equals(getBottomRight(), box.getBottomRight());
+        return Objects.equals(getTop(), box.getTop()) && Objects.equals(getLeft(), box.getLeft()) && Objects.equals(getBottom(), box.getBottom()) && Objects.equals(getRight(), box.getRight());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getDot(), getTopRight(), getBottomLeft(), getBottomRight());
+        return Objects.hash(getTop(), getLeft(), getBottom(), getRight());
     }
 }

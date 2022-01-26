@@ -6,6 +6,7 @@ import au.com.rainmore.game.Config;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 public class Game {
     private final Config config;
@@ -104,8 +105,6 @@ public class Game {
 
             positions[i] = row;
         }
-
-
     }
 
     private void setDotsRow(int rowIndex, Position[] row) {
@@ -124,6 +123,22 @@ public class Game {
         for (int i = 0; i < row.length; i++) {
             Point point =  Point.of(rowIndex, i);
             row[i] = Position.empty(point);
+        }
+    }
+
+    public boolean isCompleted() {
+        // TODO to complete the logic
+        boolean isCompleted = new Random().nextBoolean();
+        return isCompleted;
+    }
+
+    public Optional<Player> getWinner() {
+        // TODO to complete the logic
+        if (isCompleted()) {
+            return Optional.of((new Random().nextBoolean()) ? player1 : player2);
+        }
+        else {
+            return Optional.empty();
         }
     }
 
