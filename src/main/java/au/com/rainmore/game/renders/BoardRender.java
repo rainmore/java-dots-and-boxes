@@ -65,7 +65,10 @@ public class BoardRender implements Render {
                 s = game.getConfig().getSymbolLineVertical();
                 break;
             default:
-                // do nothing
+                // Display the name for the box
+                if (position.isSet()) {
+                    s = position.getSetBy().getName().charAt(0);
+                }
                 break;
         }
         return s;

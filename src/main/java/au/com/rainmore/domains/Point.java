@@ -1,19 +1,22 @@
 package au.com.rainmore.domains;
 
-import java.util.Locale;
 import java.util.Objects;
 
 public class Point {
 
-    private final char column;
+    private final int  column;
     private final int  row;
 
-    public Point(char x, int y) {
-        this.column = x;
-        this.row = y;
+    public Point(int column, int row) {
+        this.column = column;
+        this.row = row;
     }
 
-    public char getColumn() {
+    public char getColumnName() {
+        return (char) (65 + column);
+    }
+
+    public int getColumn() {
         return column;
     }
 
@@ -34,17 +37,18 @@ public class Point {
         return Objects.hash(getColumn(), getRow());
     }
 
-    public static Point of(char x, int y) {
-        return new Point(x, y);
+    public static Point of(int column, int row) {
+        return new Point(column, row);
     }
 
-    public static Point of(int x, int y) {
-        return of((char) (65 + x), y);
+    public static Point of(char columnName, int row) {
+        int column = ((int) String.valueOf(columnName).toUpperCase().charAt(0)) - 65;
+        return of(column, row);
     }
 
     public static Point of(String s) {
-        char column = s.toUpperCase().charAt(0);
-        int row = s.charAt(1);
+        char column = s.charAt(0);
+        int row = Integer.valueOf(String.valueOf(s.charAt(1)));
         return of(column, row);
     }
 

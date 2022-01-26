@@ -106,6 +106,7 @@ public class UserInterface implements Render {
 
             Optional<Player> winner = game.getWinner();
             if (winner.isPresent()) {
+                printBoard();
                 println("");
                 String template = "Game over. Player %s is the winner!";
                 println(String.format(template, winner.get().getName()));

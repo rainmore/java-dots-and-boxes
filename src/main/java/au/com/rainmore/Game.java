@@ -3,10 +3,8 @@ package au.com.rainmore;
 import au.com.rainmore.domains.*;
 import au.com.rainmore.game.Config;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Game {
     private final Config config;
@@ -55,11 +53,6 @@ public class Game {
         return actions;
     }
 
-    public Game resetActions() {
-        actions.clear();
-        return this;
-    }
-
     public Game addAction(Action action) {
         Optional<Action> previousAction = getPreviousAction();
 
@@ -68,6 +61,7 @@ public class Game {
         }
         else {
             getActions().add(action);
+            updatePosition(action);
         }
 
         return this;
@@ -96,7 +90,7 @@ public class Game {
         for (int i = 0; i < rowSize; i++) {
             Position[] row = new Position[columnSize];
 
-            if (i % 2 == 0) {
+            if (isPointOnDotRow(i)) {
                 setDotsRow(i, row);
             }
             else {
@@ -110,7 +104,7 @@ public class Game {
     private void setDotsRow(int rowIndex, Position[] row) {
         for (int i = 0; i < row.length; i++) {
             Point point =  Point.of(rowIndex, i);
-            if (i % 2 == 0) {
+            if (isPointOnDotRow(point.getRow())) {
                 row[i] = Position.dot(point);
             }
             else {
@@ -126,16 +120,58 @@ public class Game {
         }
     }
 
+    public Position findPositionBy(Point point) {
+        return positions[point.getRow()][point.getColumn()];
+    }
+
+    private void updatePosition(Action action) {
+        Position position = findPositionBy(action.getPoint());
+        if (!position.isSet() && !position.getPositionType().equals(PositionType.DOT)) {
+            position.setSetBy(action.getPlayer());
+            if (isPointOnDotRow(action.getPoint().getRow())) {
+                position.setPositionType(PositionType.HORIZONTAL);
+            }
+            else {
+                position.setPositionType(PositionType.VERTICAL);
+            }
+            updateBox(action);
+        }
+    }
+
+    private void updateBox(Action action) {
+        // TODO to update box by setting the empty position with player
+    }
+
+    private boolean isPointOnDotRow(int row) {
+        return row % 2 == 0;
+    }
+
+    public boolean isPointOnDotRow(Point point) {
+        return isPointOnDotRow(point.getRow());
+    }
+
     public boolean isCompleted() {
-        // TODO to complete the logic
-        boolean isCompleted = new Random().nextBoolean();
-        return isCompleted;
+        // TODO to improve the performance
+        long numberOfUnSetPosition = Arrays.stream(positions)
+                .map(row -> Arrays.stream(row).noneMatch(Position::isSet))
+                .filter(result -> result)
+                .count();
+
+        return numberOfUnSetPosition == 0;
     }
 
     public Optional<Player> getWinner() {
-        // TODO to complete the logic
         if (isCompleted()) {
-            return Optional.of((new Random().nextBoolean()) ? player1 : player2);
+            // TODO to improve the performance
+            Set<Position> setPositions = new HashSet<>();
+            Arrays.stream(positions)
+                    .map(row -> Arrays.stream(row).filter(position -> position.getPositionType().equals(PositionType.EMPTY)).collect(Collectors.toSet()))
+                    .forEach(setPositions::addAll);
+
+            long player1Count = setPositions.stream().filter(position -> player1.equals(position.getSetBy())).count();
+            long player2Count = setPositions.size() - player1Count;
+            // TODO to consider draw situation
+            return Optional.of((player1Count > player2Count) ? player1 : player2);
         }
         else {
             return Optional.empty();
