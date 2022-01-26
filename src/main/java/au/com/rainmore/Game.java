@@ -1,8 +1,6 @@
 package au.com.rainmore;
 
-import au.com.rainmore.domains.Action;
-import au.com.rainmore.domains.Player;
-import au.com.rainmore.domains.Score;
+import au.com.rainmore.domains.*;
 import au.com.rainmore.game.Config;
 
 import java.util.ArrayList;
@@ -20,12 +18,16 @@ public class Game {
 
     private final List<Action> actions = new ArrayList<>();
 
+    private Position[][] positions;
+
     public Game(Config config, Player player1, Player player2) {
         this.config = config;
         this.player1 = player1;
         this.player2 = player2;
         this.player1Score = new Score();
         this.player2Score = new Score();
+
+        initPositions();
     }
 
     public Config getConfig() {
@@ -70,13 +72,58 @@ public class Game {
         return this;
     }
 
-    private Optional<Action> getPreviousAction() {
+    public Optional<Action> getPreviousAction() {
         int size = getActions().size();
         if (size > 0) {
             return Optional.of(actions.get(size - 1));
         }
         else {
             return Optional.empty();
+        }
+    }
+
+    public Position[][] getPositions() {
+        return positions;
+    }
+
+    private void initPositions() {
+        int columnSize = getConfig().getColumnSize() * 2 - 1;
+        int rowSize = getConfig().getRowSize() * 2 - 1;
+
+        positions = new Position[rowSize][columnSize];
+
+        for (int i = 0; i < rowSize; i++) {
+            Position[] row = new Position[columnSize];
+
+            if (i % 2 == 0) {
+                setDotsRow(i, row);
+            }
+            else {
+                setEmptyRow(i, row);
+            }
+
+            positions[i] = row;
+        }
+
+
+    }
+
+    private void setDotsRow(int rowIndex, Position[] row) {
+        for (int i = 0; i < row.length; i++) {
+            Point point =  Point.of(rowIndex, i);
+            if (i % 2 == 0) {
+                row[i] = Position.dot(point);
+            }
+            else {
+                row[i] = Position.empty(point);
+            }
+        }
+    }
+
+    private void setEmptyRow(int rowIndex, Position[] row) {
+        for (int i = 0; i < row.length; i++) {
+            Point point =  Point.of(rowIndex, i);
+            row[i] = Position.empty(point);
         }
     }
 

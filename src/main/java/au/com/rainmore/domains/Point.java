@@ -2,12 +2,12 @@ package au.com.rainmore.domains;
 
 import java.util.Objects;
 
-public class Dot {
+public class Point {
 
     private final int x;
     private final int y;
 
-    public Dot(int x, int y) {
+    public Point(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -23,9 +23,9 @@ public class Dot {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Dot)) return false;
-        Dot dot = (Dot) o;
-        return getX() == dot.getX() && getY() == dot.getY();
+        if (!(o instanceof Point)) return false;
+        Point point = (Point) o;
+        return getX() == point.getX() && getY() == point.getY();
     }
 
     @Override
@@ -33,13 +33,8 @@ public class Dot {
         return Objects.hash(getX(), getY());
     }
 
-    @Override
-    public String toString() {
-        return String.format("Dot(%d, %d)", getX(), getY());
-    }
-
-    public static Dot of(int x, int y) {
-        return new Dot(x, y);
+    public static Point of(int x, int y) {
+        return new Point(x, y);
     }
 
 }

@@ -1,6 +1,7 @@
 package au.com.rainmore.game.renders;
 
 import au.com.rainmore.Game;
+import au.com.rainmore.domains.Position;
 
 public class BoardRender implements Render {
 
@@ -15,8 +16,9 @@ public class BoardRender implements Render {
 
     private void setGame(Game game) {
         this.game = game;
-        this.columnSize = game.getConfig().getColumnSize() * 2 - 1;
-        this.rowSize = game.getConfig().getRowSize() * 2 - 1;
+
+        this.rowSize = game.getPositions().length;
+        this.columnSize = game.getPositions()[0].length;
     }
 
     @Override
@@ -29,12 +31,7 @@ public class BoardRender implements Render {
 
     private void renderRows() {
         for (int i = 0; i < rowSize; i++) {
-            if (i % 2 == 0) {
-                println(buildDotsRow(i));
-            }
-            else {
-                println(buildRow(i));
-            }
+            println(buildRow(i));
         }
     }
 
@@ -47,33 +44,31 @@ public class BoardRender implements Render {
         return String.format(rowTemplate, index, String.valueOf(row));
     }
 
-    private String buildDotsRow(int rowIndex) {
+    private String buildRow(int rowIndex) {
         char[] row = new char[columnSize];
-        for (int i = 0; i < row.length; i++) {
-            if (i % 2 == 0) {
-                row[i] = game.getConfig().getSymbolDot();
-            }
-            else {
-                // TODO to build row —
-                row[i] = ' ';
-            }
-
+        for (int i = 0; i < columnSize; i++) {
+           row[i] = buildPositionChar(game.getPositions()[rowIndex][i]);
         }
         return String.format(rowTemplate, rowIndex, String.valueOf(row));
     }
 
-    private String buildRow(int rowIndex) {
-        char[] row = new char[columnSize];
-        for (int i = 0; i < row.length; i++) {
-            if (i % 2 != 0) {
-                row[i] = ' ';
-            }
-            else {
-                // TODO to build row —
-                row[i] = ' ';
-            }
+    private char buildPositionChar(Position position) {
+        char s = ' ';
+        switch (position.getPositionType()) {
+            case DOT:
+                s = game.getConfig().getSymbolDot();
+                break;
+            case HORIZONTAL:
+                s = game.getConfig().getSymbolLineHorizontal();
+                break;
+            case VERTICAL:
+                s = game.getConfig().getSymbolLineVertical();
+                break;
+            default:
+                // do nothing
+                break;
         }
-        return String.format(rowTemplate, rowIndex, String.valueOf(row));
+        return s;
     }
 
 }
