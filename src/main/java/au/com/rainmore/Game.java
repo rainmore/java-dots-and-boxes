@@ -126,7 +126,7 @@ public class Game {
 
     private void updatePosition(Action action) {
         Position position = findPositionBy(action.getPoint());
-        if (!position.isSet() && !position.getPositionType().equals(PositionType.DOT)) {
+        if (!position.isSet() && !position.getPositionType().isDot()) {
             position.setSetBy(action.getPlayer());
             if (isPointOnDotRow(action.getPoint().getRow())) {
                 position.setPositionType(PositionType.HORIZONTAL);
@@ -165,7 +165,7 @@ public class Game {
             // TODO to improve the performance
             Set<Position> setPositions = new HashSet<>();
             Arrays.stream(positions)
-                    .map(row -> Arrays.stream(row).filter(position -> position.getPositionType().equals(PositionType.EMPTY)).collect(Collectors.toSet()))
+                    .map(row -> Arrays.stream(row).filter(position -> position.getPositionType().isEmpty()).collect(Collectors.toSet()))
                     .forEach(setPositions::addAll);
 
             long player1Count = setPositions.stream().filter(position -> player1.equals(position.getSetBy())).count();

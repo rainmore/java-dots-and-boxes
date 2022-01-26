@@ -39,12 +39,12 @@ public class ActionValidator implements Validator<Action> {
 
         if (!game.isPointOnDotRow(action.getPoint())) {
             Point point = Point.of(action.getPoint().getColumn(), action.getPoint().getRow() - 1);
-            if (!game.findPositionBy(point).getPositionType().equals(PositionType.DOT)) {
+            if (!game.findPositionBy(point).getPositionType().isDot()) {
                 errors.add(new Error("Invalid move. Please try again."));
             }
         }
         else {
-            if (position.getPositionType().equals(PositionType.DOT)) {
+            if (position.getPositionType().isDot()) {
                 errors.add(new Error("Invalid move. Please try again."));
             }
         }
