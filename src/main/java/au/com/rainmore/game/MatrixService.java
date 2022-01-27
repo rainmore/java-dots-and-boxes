@@ -3,7 +3,6 @@ package au.com.rainmore.game;
 import au.com.rainmore.game.domains.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class MatrixService {
 
@@ -25,10 +24,6 @@ public class MatrixService {
 
     public int getColumnSize() {
         return columnSize;
-    }
-
-    public Position[][] getMatrix() {
-        return matrix;
     }
 
     public Position findPositionBy(Point point) {
@@ -101,16 +96,6 @@ public class MatrixService {
         }
     }
 
-    public Set<Position> findUnsetPositions() {
-        // TODO to improve the performance
-        Set<Position> boxPositions = new HashSet<>();
-        Arrays.stream(matrix)
-                .map(row -> Arrays.stream(row).filter(position -> !position.getPositionType().isDot() && !position.isSet()).collect(Collectors.toSet()))
-                .forEach(boxPositions::addAll);
-
-        return boxPositions;
-    }
-
     public long countUnsetPositions() {
         return Arrays.stream(matrix)
                 .map(row -> Arrays.stream(row).filter(position -> !position.getPositionType().isDot() && !position.isSet()).count())
@@ -119,15 +104,6 @@ public class MatrixService {
 
     public boolean isCompleted() {
         return countUnsetPositions() == 0L;
-    }
-
-    public Set<Position> findBoxPositionsBy(Player player) {
-        Set<Position> boxPositions = new HashSet<>();
-        Arrays.stream(matrix)
-                .map(row -> Arrays.stream(row).filter(position -> position.getPositionType().isEmpty() && position.getSetBy() == player).collect(Collectors.toSet()))
-                .forEach(boxPositions::addAll);
-
-        return boxPositions;
     }
 
     public long countBoxPositionsBy(Player player) {
