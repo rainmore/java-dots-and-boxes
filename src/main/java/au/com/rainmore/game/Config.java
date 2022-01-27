@@ -2,7 +2,7 @@ package au.com.rainmore.game;
 
 public class Config {
 
-    private static final char SYMBOL_DOT           = '*';
+    private static final char SYMBOL_DOT             = '*';
     private static final char SYMBOL_LINE_VERTICAL   = '|';
     private static final char SYMBOL_LINE_HORIZONTAL = '—';
     private static final char SYMBOL_QUIT            = 'Q';

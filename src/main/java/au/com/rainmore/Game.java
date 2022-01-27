@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.Set;
 
 public class Game {
+
     private final Config config;
 
     private final Player player1;
@@ -64,8 +65,7 @@ public class Game {
 
         if (previousAction.isPresent() && previousAction.get().getPlayer().equals(action.getPlayer())) {
             throw new RuntimeException("Player has to play in turn");
-        }
-        else {
+        } else {
             getActions().add(action);
             updatePosition(action);
         }
@@ -75,8 +75,7 @@ public class Game {
         int size = getActions().size();
         if (size > 0) {
             return Optional.of(actions.get(size - 1));
-        }
-        else {
+        } else {
             return Optional.empty();
         }
     }
@@ -103,12 +102,10 @@ public class Game {
     public Optional<Player> getWinner() {
         if (!getMatrixService().isCompleted()) {
             return Optional.empty();
-        }
-        else if (this.player1Score.getScore() ==  this.player2Score.getScore()) {
+        } else if (this.player1Score.getScore() == this.player2Score.getScore()) {
             return Optional.empty();
-        }
-        else {
-            return Optional.of((this.player1Score.getScore() >  this.player2Score.getScore()) ? player1 : player2);
+        } else {
+            return Optional.of((this.player1Score.getScore() > this.player2Score.getScore()) ? player1 : player2);
         }
     }
 

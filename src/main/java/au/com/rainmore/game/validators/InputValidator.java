@@ -7,9 +7,9 @@ import java.util.regex.Pattern;
 
 public class InputValidator implements Validator<String> {
 
-    private Game game;
-    private Pattern patternCommand;
-    private Pattern patternQuit;
+    private final Game    game;
+    private final Pattern patternCommand;
+    private final Pattern patternQuit;
 
     public InputValidator(Game game) {
         this.game = game;
@@ -29,7 +29,7 @@ public class InputValidator implements Validator<String> {
     }
 
     public boolean isValidCommand(String s) {
-       return patternCommand.matcher(s).matches();
+        return patternCommand.matcher(s).matches();
     }
 
     private Pattern buildPatternQuit() {

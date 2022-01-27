@@ -4,7 +4,7 @@ import au.com.rainmore.Game;
 
 public class ScoreRender implements Render {
 
-    private String template = "SCORE %s: %d, %s: %d";
+    private final String template = "SCORE %s: %d, %s: %d";
 
     @Override
     public void render(Game game) {

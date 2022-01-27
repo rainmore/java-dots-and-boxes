@@ -4,10 +4,10 @@ import java.util.Objects;
 
 public class Box {
 
-    private Position top;
-    private Position right;
-    private Position bottom;
-    private Position left;
+    private final Position top;
+    private final Position right;
+    private final Position bottom;
+    private final Position left;
 
     public Box(Position top, Position right, Position bottom, Position left) {
         this.top = top;

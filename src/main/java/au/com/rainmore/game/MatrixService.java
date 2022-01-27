@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 public class MatrixService {
 
-    private Config config;
+    private final Config config;
 
     private int rowSize;
     private int columnSize;
@@ -55,8 +55,7 @@ public class MatrixService {
 
             if (isPointOnDotRow(i)) {
                 setDotsRow(i, row);
-            }
-            else {
+            } else {
                 setEmptyRow(i, row);
             }
 
@@ -66,11 +65,10 @@ public class MatrixService {
 
     private void setDotsRow(int rowIndex, Position[] row) {
         for (int i = 0; i < row.length; i++) {
-            Point point =  Point.of(rowIndex, i);
+            Point point = Point.of(rowIndex, i);
             if (isPointOnDotRow(point.getRow())) {
                 row[i] = Position.dot(point);
-            }
-            else {
+            } else {
                 row[i] = Position.empty(point);
             }
         }
@@ -78,7 +76,7 @@ public class MatrixService {
 
     private void setEmptyRow(int rowIndex, Position[] row) {
         for (int i = 0; i < row.length; i++) {
-            Point point =  Point.of(rowIndex, i);
+            Point point = Point.of(rowIndex, i);
             row[i] = Position.empty(point);
         }
     }
@@ -97,8 +95,7 @@ public class MatrixService {
             position.setSetBy(action.getPlayer());
             if (isPointOnDotRow(action.getPoint().getRow())) {
                 position.setPositionType(PositionType.HORIZONTAL);
-            }
-            else {
+            } else {
                 position.setPositionType(PositionType.VERTICAL);
             }
             updateBox(action);
@@ -128,7 +125,6 @@ public class MatrixService {
     private void updateBox(Action action) {
         // TODO to update box by setting the empty position with player
     }
-
 
 
 }

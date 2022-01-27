@@ -4,13 +4,33 @@ import java.util.Optional;
 
 public class Position {
 
-    private Point        point;
-    private PositionType type;
-    private Player setBy;
+    private final Point        point;
+    private       PositionType type;
+    private Player       setBy;
 
     public Position(Point point, PositionType positionType) {
         this.point = point;
         this.type = positionType;
+    }
+
+    public static Position of(Point point, PositionType type) {
+        return new Position(point, type);
+    }
+
+    public static Position dot(Point point) {
+        return of(point, PositionType.DOT);
+    }
+
+    public static Position empty(Point point) {
+        return of(point, PositionType.EMPTY);
+    }
+
+    public static Position horizontal(Point point) {
+        return of(point, PositionType.HORIZONTAL);
+    }
+
+    public static Position vertical(Point point) {
+        return of(point, PositionType.VERTICAL);
     }
 
     public PositionType getPositionType() {
@@ -35,26 +55,6 @@ public class Position {
 
     public boolean isSet() {
         return Optional.ofNullable(setBy).isPresent();
-    }
-
-    public static Position of(Point point, PositionType type) {
-        return new Position(point, type);
-    }
-
-    public static Position dot(Point point) {
-        return of(point, PositionType.DOT);
-    }
-
-    public static Position empty(Point point) {
-        return of(point, PositionType.EMPTY);
-    }
-
-    public static Position horizontal(Point point) {
-        return of(point, PositionType.HORIZONTAL);
-    }
-
-    public static Position vertical(Point point) {
-        return of(point, PositionType.VERTICAL);
     }
 
 }

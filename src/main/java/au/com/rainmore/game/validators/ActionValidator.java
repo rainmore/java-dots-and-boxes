@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public class ActionValidator implements Validator<Action> {
 
-    private Game game;
+    private final Game game;
 
     public ActionValidator(Game game) {
         this.game = game;
@@ -41,8 +41,7 @@ public class ActionValidator implements Validator<Action> {
             if (!game.getMatrixService().findPositionBy(point).getPositionType().isDot()) {
                 errors.add(new Error("Invalid move. Please try again."));
             }
-        }
-        else {
+        } else {
             if (position.getPositionType().isDot()) {
                 errors.add(new Error("Invalid move. Please try again."));
             }

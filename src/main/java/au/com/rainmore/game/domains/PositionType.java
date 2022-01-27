@@ -4,8 +4,7 @@ public enum PositionType {
     DOT,
     EMPTY,
     HORIZONTAL,
-    VERTICAL
-    ;
+    VERTICAL;
 
     public boolean isDot() {
         return DOT == this;

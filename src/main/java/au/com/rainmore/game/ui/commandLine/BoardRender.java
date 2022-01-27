@@ -5,9 +5,9 @@ import au.com.rainmore.game.domains.Position;
 
 public class BoardRender implements Render {
 
-    private String rowTemplate = "%s %s";
+    private final String rowTemplate = "%s %s";
 
-    private ScoreRender scoreRender = new ScoreRender();
+    private final ScoreRender scoreRender = new ScoreRender();
 
     private Game game;
 
@@ -47,7 +47,7 @@ public class BoardRender implements Render {
     private String buildRow(int rowIndex) {
         char[] row = new char[columnSize];
         for (int i = 0; i < columnSize; i++) {
-           row[i] = buildPositionChar(game.getMatrixService().findPositionBy(rowIndex, i));
+            row[i] = buildPositionChar(game.getMatrixService().findPositionBy(rowIndex, i));
         }
         return String.format(rowTemplate, rowIndex, String.valueOf(row));
     }
