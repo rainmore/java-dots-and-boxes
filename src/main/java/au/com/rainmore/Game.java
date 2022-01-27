@@ -67,7 +67,7 @@ public class Game {
             throw new RuntimeException("Player has to play in turn");
         } else {
             getActions().add(action);
-            updatePosition(action);
+            updatePositionBy(action);
         }
     }
 
@@ -84,19 +84,14 @@ public class Game {
         return matrixService;
     }
 
-    private void updatePosition(Action action) {
-        getMatrixService().updatePosition(action);
+    private void updatePositionBy(Action action) {
+        getMatrixService().process(action);
         updateScore();
     }
 
     private void updateScore() {
-        // TODO to improve the performance
-        Set<Position> boxPositions = getMatrixService().findBoxPositions();
-
-        long player1Count = boxPositions.stream().filter(position -> player1.equals(position.getSetBy())).count();
-
-        this.player1Score.setScore(player1Count);
-        this.player2Score.setScore(boxPositions.size() - player1Count);
+        this.player1Score.setScore(getMatrixService().countBoxPositionsBy(player1));
+        this.player2Score.setScore(getMatrixService().countBoxPositionsBy(player2));
     }
 
     public Optional<Player> getWinner() {

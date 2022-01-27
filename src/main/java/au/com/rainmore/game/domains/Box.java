@@ -1,6 +1,7 @@
 package au.com.rainmore.game.domains;
 
-import java.util.Objects;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class Box {
 
@@ -32,16 +33,23 @@ public class Box {
         return right;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Box)) return false;
-        Box box = (Box) o;
-        return Objects.equals(getTop(), box.getTop()) && Objects.equals(getLeft(), box.getLeft()) && Objects.equals(getBottom(), box.getBottom()) && Objects.equals(getRight(), box.getRight());
+    private Position[] getPositions() {
+        return new Position[] {
+            getTop(),
+            getRight(),
+            getBottom(),
+            getLeft()
+        };
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getTop(), getLeft(), getBottom(), getRight());
+    public boolean isSet() {
+        return Arrays.stream(getPositions()).allMatch(Position::isSet);
     }
+
+    public Point getCenterPoint() {
+        int column = getTop().getPoint().getColumn();
+        int row = getLeft().getPoint().getRow();
+        return Point.of(column, row);
+    }
+
 }

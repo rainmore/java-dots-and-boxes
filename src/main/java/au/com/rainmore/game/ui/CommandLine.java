@@ -90,7 +90,6 @@ public class CommandLine implements Render {
     }
 
     private void processAction(Player player, String input) {
-        println(input);
         Action action = new Action(player, Point.of(input));
 
         List<Error> errors = new ArrayList<>();

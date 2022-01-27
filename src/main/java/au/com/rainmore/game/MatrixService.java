@@ -1,13 +1,8 @@
 package au.com.rainmore.game;
 
-import au.com.rainmore.game.domains.Action;
-import au.com.rainmore.game.domains.Point;
-import au.com.rainmore.game.domains.Position;
-import au.com.rainmore.game.domains.PositionType;
+import au.com.rainmore.game.domains.*;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class MatrixService {
@@ -50,34 +45,34 @@ public class MatrixService {
 
         matrix = new Position[rowSize][columnSize];
 
-        for (int i = 0; i < rowSize; i++) {
+        for (int rowIndex = 0; rowIndex < rowSize; rowIndex++) {
             Position[] row = new Position[columnSize];
 
-            if (isPointOnDotRow(i)) {
-                setDotsRow(i, row);
+            if (isPointOnDotRow(rowIndex)) {
+                setDotsRow(rowIndex, row);
             } else {
-                setEmptyRow(i, row);
+                setEmptyRow(rowIndex, row);
             }
 
-            matrix[i] = row;
+            matrix[rowIndex] = row;
         }
     }
 
     private void setDotsRow(int rowIndex, Position[] row) {
-        for (int i = 0; i < row.length; i++) {
-            Point point = Point.of(rowIndex, i);
-            if (isPointOnDotRow(point.getRow())) {
-                row[i] = Position.dot(point);
+        for (int column = 0; column < row.length; column++) {
+            Point point = Point.of(column, rowIndex);
+            if (column % 2 == 0) {
+                row[column] = Position.dot(point);
             } else {
-                row[i] = Position.empty(point);
+                row[column] = Position.empty(point);
             }
         }
     }
 
     private void setEmptyRow(int rowIndex, Position[] row) {
-        for (int i = 0; i < row.length; i++) {
-            Point point = Point.of(rowIndex, i);
-            row[i] = Position.empty(point);
+        for (int column = 0; column < row.length; column++) {
+            Point point = Point.of(column, rowIndex);
+            row[column] = Position.empty(point);
         }
     }
 
@@ -89,7 +84,12 @@ public class MatrixService {
         return isPointOnDotRow(point.getRow());
     }
 
-    public void updatePosition(Action action) {
+    public void process(Action action) {
+        updatePosition(action);
+        updateBox(action);
+    }
+
+    private void updatePosition(Action action) {
         Position position = findPositionBy(action.getPoint());
         if (!position.isSet() && !position.getPositionType().isDot()) {
             position.setSetBy(action.getPlayer());
@@ -98,33 +98,106 @@ public class MatrixService {
             } else {
                 position.setPositionType(PositionType.VERTICAL);
             }
-            updateBox(action);
         }
     }
 
-    public Set<Position> findBoxPositions() {
+    public Set<Position> findUnsetPositions() {
         // TODO to improve the performance
         Set<Position> boxPositions = new HashSet<>();
         Arrays.stream(matrix)
-                .map(row -> Arrays.stream(row).filter(position -> position.getPositionType().isEmpty()).collect(Collectors.toSet()))
+                .map(row -> Arrays.stream(row).filter(position -> !position.getPositionType().isDot() && !position.isSet()).collect(Collectors.toSet()))
                 .forEach(boxPositions::addAll);
 
         return boxPositions;
     }
 
-    public boolean isCompleted() {
-        // TODO to improve the performance
-        long numberOfUnSetPosition = Arrays.stream(matrix)
-                .map(row -> Arrays.stream(row).noneMatch(Position::isSet))
-                .filter(result -> result)
-                .count();
+    public long countUnsetPositions() {
+        return Arrays.stream(matrix)
+                .map(row -> Arrays.stream(row).filter(position -> !position.getPositionType().isDot() && !position.isSet()).count())
+                .reduce(0L, Long::sum);
+    }
 
-        return numberOfUnSetPosition == 0;
+    public boolean isCompleted() {
+        return countUnsetPositions() == 0L;
+    }
+
+    public Set<Position> findBoxPositionsBy(Player player) {
+        Set<Position> boxPositions = new HashSet<>();
+        Arrays.stream(matrix)
+                .map(row -> Arrays.stream(row).filter(position -> position.getPositionType().isEmpty() && position.getSetBy() == player).collect(Collectors.toSet()))
+                .forEach(boxPositions::addAll);
+
+        return boxPositions;
+    }
+
+    public long countBoxPositionsBy(Player player) {
+        return Arrays.stream(matrix)
+                .map(row -> Arrays.stream(row).filter(position -> position.getPositionType().isEmpty() && position.getSetBy() == player).count())
+                .reduce(0L, Long::sum);
     }
 
     private void updateBox(Action action) {
-        // TODO to update box by setting the empty position with player
+        Position position = findPositionBy(action.getPoint());
+        Set<Box> boxes = buildBoxesBy(position);
+
+        boxes.stream()
+                .filter(Box::isSet)
+                .map(Box::getCenterPoint)
+                .map(this::findPositionBy)
+                .filter(centerPosition -> !centerPosition.isSet())
+                .forEach(centerPosition -> centerPosition.setSetBy(action.getPlayer()));
     }
 
+    private Set<Box> buildBoxesBy(Position position) {
+        Set<Box> boxes = new HashSet<>();
+        int row = position.getPoint().getRow();
+        int column = position.getPoint().getColumn();
+        switch (position.getPositionType()) {
+            case HORIZONTAL:
+                if (row < rowSize - 1) {
+                    // build box below the point
+                    boxes.add(new Box(
+                            matrix[row][column], // 0 1
+                            matrix[row + 1][column + 1],
+                            matrix[row + 2][column],
+                            matrix[row + 1][column - 1]
+                    ));
+                }
+                if (row > 0) {
+                    // build box above the point
+                    boxes.add(new Box(
+                            matrix[row - 2][column],
+                            matrix[row - 1][column + 1],
+                            matrix[row][column],
+                            matrix[row - 1][column - 1]
+                    ));
+                }
+                break;
+            case VERTICAL:
+                if (column < columnSize - 1) {
+                    // build box at right side of the point
+                    boxes.add(new Box(
+                            matrix[row - 1][column + 1],
+                            matrix[row][column + 2],
+                            matrix[row + 1][column + 1],
+                            matrix[row][column]
+                    ));
+                }
+                if (column > 0) {
+                    // build box at left side of the point
+                    boxes.add(new Box(
+                            matrix[row - 1][column - 1],
+                            matrix[row][column],
+                            matrix[row + 1][column - 1],
+                            matrix[row][column - 2]
+                    ));
+                }
+                break;
+            default:
+                // do nothing
+                break;
+        }
+        return boxes;
+    }
 
 }
