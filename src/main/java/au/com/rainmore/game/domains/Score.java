@@ -2,13 +2,13 @@ package au.com.rainmore.game.domains;
 
 public class Score {
 
-    private int score = 0;
+    private long score = 0;
 
-    public int getScore() {
+    public long getScore() {
         return score;
     }
 
-    public void setScore(int score) {
+    public void setScore(long score) {
         this.score = score;
     }
 

@@ -15,6 +15,7 @@ public class Application {
         int columnSize = 4;
 
         Config config = new Config(rowSize, columnSize);
+
         Player player1 = new Player("1");
         Player player2 = new Player("2");
 

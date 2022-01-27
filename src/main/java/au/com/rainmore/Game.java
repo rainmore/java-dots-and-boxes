@@ -135,7 +135,21 @@ public class Game {
                 position.setPositionType(PositionType.VERTICAL);
             }
             updateBox(action);
+            updateScore();
         }
+    }
+
+    private void updateScore() {
+        // TODO to improve the performance
+        Set<Position> setPositions = new HashSet<>();
+        Arrays.stream(positions)
+                .map(row -> Arrays.stream(row).filter(position -> position.getPositionType().isEmpty()).collect(Collectors.toSet()))
+                .forEach(setPositions::addAll);
+
+        long player1Count = setPositions.stream().filter(position -> player1.equals(position.getSetBy())).count();
+
+        this.player1Score.setScore(player1Count);
+        this.player1Score.setScore(setPositions.size() - player1Count);
     }
 
     private void updateBox(Action action) {
@@ -162,16 +176,7 @@ public class Game {
 
     public Optional<Player> getWinner() {
         if (isCompleted()) {
-            // TODO to improve the performance
-            Set<Position> setPositions = new HashSet<>();
-            Arrays.stream(positions)
-                    .map(row -> Arrays.stream(row).filter(position -> position.getPositionType().isEmpty()).collect(Collectors.toSet()))
-                    .forEach(setPositions::addAll);
-
-            long player1Count = setPositions.stream().filter(position -> player1.equals(position.getSetBy())).count();
-            long player2Count = setPositions.size() - player1Count;
-            // TODO to consider draw situation
-            return Optional.of((player1Count > player2Count) ? player1 : player2);
+            return Optional.of((this.player1Score.getScore() >=  this.player2Score.getScore()) ? player1 : player2);
         }
         else {
             return Optional.empty();
