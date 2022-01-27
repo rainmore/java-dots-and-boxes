@@ -1,4 +1,5 @@
-#Dots and Boxes
+Dots and Boxes
+--------------
 
 A Java implementation of Dots and Boxes game. 
 
