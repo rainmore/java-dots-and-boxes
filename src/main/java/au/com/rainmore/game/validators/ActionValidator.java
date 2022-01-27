@@ -36,13 +36,12 @@ public class ActionValidator implements Validator<Action> {
             errors.add(new Error("This position is already occupied. Please try again."));
         }
 
-        if (!game.getMatrixService().isPointOnDotRow(action.getPoint())) {
+        if (position.getPositionType().isDot()) {
+            errors.add(new Error("Invalid move. Please try again."));
+        } else if (!game.getMatrixService().isPointOnDotRow(action.getPoint())) {
             Point point = Point.of(action.getPoint().getColumn(), action.getPoint().getRow() - 1);
+
             if (!game.getMatrixService().findPositionBy(point).getPositionType().isDot()) {
-                errors.add(new Error("Invalid move. Please try again."));
-            }
-        } else {
-            if (position.getPositionType().isDot()) {
                 errors.add(new Error("Invalid move. Please try again."));
             }
         }
