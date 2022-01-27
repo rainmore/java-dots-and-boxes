@@ -2,7 +2,7 @@ package au.com.rainmore;
 
 import au.com.rainmore.domains.Player;
 import au.com.rainmore.game.Config;
-import au.com.rainmore.game.UserInterface;
+import au.com.rainmore.game.ui.CommandLine;
 
 import java.util.Scanner;
 
@@ -20,7 +20,7 @@ public class Application {
 
         Game game = new Game(config, player1, player2);
 
-        UserInterface ui = new UserInterface(scanner);
+        CommandLine ui = new CommandLine(scanner);
 
         ui.render(game);
     }

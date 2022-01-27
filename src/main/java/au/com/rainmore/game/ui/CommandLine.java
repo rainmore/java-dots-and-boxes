@@ -1,4 +1,4 @@
-package au.com.rainmore.game;
+package au.com.rainmore.game.ui;
 
 import au.com.rainmore.Game;
 import au.com.rainmore.domains.Action;
@@ -11,7 +11,7 @@ import au.com.rainmore.game.validators.InputValidator;
 
 import java.util.*;
 
-public class UserInterface implements Render {
+public class CommandLine implements Render {
 
     private final Scanner scanner;
     private final BoardRender boardRender = new BoardRender();
@@ -20,7 +20,7 @@ public class UserInterface implements Render {
     private InputValidator inputValidator;
     private ActionValidator actionValidator;
 
-    public UserInterface(Scanner scanner) {
+    public CommandLine(Scanner scanner) {
         this.scanner = scanner;
     }
 
