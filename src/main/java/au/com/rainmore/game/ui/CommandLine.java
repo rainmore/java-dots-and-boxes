@@ -113,6 +113,7 @@ public class CommandLine implements Render {
                 quit();
             }
             else {
+                // TODO to figure out the draw situation and in valid box situation
                 printBoard();
                 processPlayerInput(getNextPlayer());
             }

@@ -39,11 +39,11 @@ public class InputValidator implements Validator<String> {
     }
 
     private Pattern buildPatternCommand() {
-        char[] colurmChars = new char[game.getPositions()[0].length];
+        char[] colurmChars = new char[game.getMatrixService().getColumnSize()];
         for (int i = 0; i < colurmChars.length; i++) {
             colurmChars[i] = (char) (65 + i);
         }
-        String pattern = String.format("[%s]{1}[0-%d]{1}", String.valueOf(colurmChars), game.getPositions().length - 1);
+        String pattern = String.format("[%s]{1}[0-%d]{1}", String.valueOf(colurmChars), game.getMatrixService().getRowSize() - 1);
         return Pattern.compile(pattern);
     }
 

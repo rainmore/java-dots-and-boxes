@@ -31,14 +31,14 @@ public class ActionValidator implements Validator<Action> {
     }
 
     private void validatePosition(Action action, List<Error> errors) {
-        Position position = game.findPositionBy(action.getPoint());
+        Position position = game.getMatrixService().findPositionBy(action.getPoint());
         if (position.isSet()) {
             errors.add(new Error("This position is already occupied. Please try again."));
         }
 
-        if (!game.isPointOnDotRow(action.getPoint())) {
+        if (!game.getMatrixService().isPointOnDotRow(action.getPoint())) {
             Point point = Point.of(action.getPoint().getColumn(), action.getPoint().getRow() - 1);
-            if (!game.findPositionBy(point).getPositionType().isDot()) {
+            if (!game.getMatrixService().findPositionBy(point).getPositionType().isDot()) {
                 errors.add(new Error("Invalid move. Please try again."));
             }
         }

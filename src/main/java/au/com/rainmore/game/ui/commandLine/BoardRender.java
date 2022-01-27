@@ -17,8 +17,8 @@ public class BoardRender implements Render {
     private void setGame(Game game) {
         this.game = game;
 
-        this.rowSize = game.getPositions().length;
-        this.columnSize = game.getPositions()[0].length;
+        this.rowSize = game.getMatrixService().getRowSize();
+        this.columnSize = game.getMatrixService().getColumnSize();
     }
 
     @Override
@@ -47,7 +47,7 @@ public class BoardRender implements Render {
     private String buildRow(int rowIndex) {
         char[] row = new char[columnSize];
         for (int i = 0; i < columnSize; i++) {
-           row[i] = buildPositionChar(game.getPositions()[rowIndex][i]);
+           row[i] = buildPositionChar(game.getMatrixService().findPositionBy(rowIndex, i));
         }
         return String.format(rowTemplate, rowIndex, String.valueOf(row));
     }
