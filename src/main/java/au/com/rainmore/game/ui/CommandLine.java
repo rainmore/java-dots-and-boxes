@@ -60,8 +60,8 @@ public class CommandLine implements Render {
     }
 
     private void processPlayerInput(Player player) {
-        String template = "Player %s, input a move <column><row> (or '%s' to quit): ";
-        print(String.format(template, player.getName(), game.getConfig().getSymbolQuit()));
+        String template = "%s, input a move <column><row> (or '%s' to quit): ";
+        print(String.format(template, player, game.getConfig().getSymbolQuit()));
 
         String input = scanner.next();
 
@@ -106,8 +106,8 @@ public class CommandLine implements Render {
             if (winner.isPresent()) {
                 printBoard();
                 println("");
-                String template = "Game over. Player %s is the winner!";
-                println(String.format(template, winner.get().getName()));
+                String template = "Game over. %s is the winner!";
+                println(String.format(template, winner.get()));
                 quit();
             } else {
                 // TODO to figure out the draw situation and in valid box situation

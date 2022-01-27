@@ -16,8 +16,8 @@ public class Application {
 
         Config config = new Config(rowSize, columnSize);
 
-        Player player1 = new Player("1");
-        Player player2 = new Player("2");
+        Player player1 = new Player("Player 1");
+        Player player2 = new Player("Player 2");
 
         Game game = new Game(config, player1, player2);
 

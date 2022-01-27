@@ -29,7 +29,7 @@ public class Player {
 
     @Override
     public String toString() {
-        return String.format("Player %s", name);
+        return getName();
     }
 
 }
