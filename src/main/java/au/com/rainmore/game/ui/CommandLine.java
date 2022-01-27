@@ -61,7 +61,7 @@ public class CommandLine implements Render {
 
     private void processPlayerInput(Player player) {
         String template = "Player %s, input a move <column><row> (or '%s' to quit): ";
-        print(String.format(template, player, game.getConfig().getSymbolQuit()));
+        print(String.format(template, player.getName(), game.getConfig().getSymbolQuit()));
 
         String input = scanner.next();
 

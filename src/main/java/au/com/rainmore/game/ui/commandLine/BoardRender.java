@@ -64,7 +64,7 @@ public class BoardRender implements Render {
             case VERTICAL:
                 s = game.getConfig().getSymbolLineVertical();
                 break;
-            default:
+            case EMPTY:
                 // Display the name for the box
                 if (position.isSet()) {
                     s = position.getSetBy().getName().charAt(0);
