@@ -1,10 +1,9 @@
 package au.com.rainmore.game.validators;
 
 import au.com.rainmore.Game;
-import au.com.rainmore.domains.Action;
-import au.com.rainmore.domains.Point;
-import au.com.rainmore.domains.Position;
-import au.com.rainmore.domains.PositionType;
+import au.com.rainmore.game.domains.Action;
+import au.com.rainmore.game.domains.Point;
+import au.com.rainmore.game.domains.Position;
 
 import java.util.List;
 import java.util.Optional;

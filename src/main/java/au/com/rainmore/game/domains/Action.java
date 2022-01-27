@@ -1,4 +1,4 @@
-package au.com.rainmore.domains;
+package au.com.rainmore.game.domains;
 
 public class Action {
 

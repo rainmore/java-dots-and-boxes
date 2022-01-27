@@ -1,11 +1,11 @@
 package au.com.rainmore.game.ui;
 
 import au.com.rainmore.Game;
-import au.com.rainmore.domains.Action;
-import au.com.rainmore.domains.Player;
-import au.com.rainmore.domains.Point;
-import au.com.rainmore.game.renders.BoardRender;
-import au.com.rainmore.game.renders.Render;
+import au.com.rainmore.game.domains.Action;
+import au.com.rainmore.game.domains.Player;
+import au.com.rainmore.game.domains.Point;
+import au.com.rainmore.game.ui.commandLine.BoardRender;
+import au.com.rainmore.game.ui.commandLine.Render;
 import au.com.rainmore.game.validators.ActionValidator;
 import au.com.rainmore.game.validators.InputValidator;
 

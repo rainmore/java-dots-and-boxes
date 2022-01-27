@@ -1,7 +1,7 @@
-package au.com.rainmore.game.renders;
+package au.com.rainmore.game.ui.commandLine;
 
 import au.com.rainmore.Game;
-import au.com.rainmore.domains.Position;
+import au.com.rainmore.game.domains.Position;
 
 public class BoardRender implements Render {
 

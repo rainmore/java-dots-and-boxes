@@ -1,4 +1,4 @@
-package au.com.rainmore.game.renders;
+package au.com.rainmore.game.ui.commandLine;
 
 import au.com.rainmore.Game;
 

@@ -1,6 +1,6 @@
 package au.com.rainmore;
 
-import au.com.rainmore.domains.Player;
+import au.com.rainmore.game.domains.Player;
 import au.com.rainmore.game.Config;
 import au.com.rainmore.game.ui.CommandLine;
 

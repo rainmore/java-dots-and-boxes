@@ -1,6 +1,6 @@
 package au.com.rainmore;
 
-import au.com.rainmore.domains.*;
+import au.com.rainmore.game.domains.*;
 import au.com.rainmore.game.Config;
 
 import java.util.*;
